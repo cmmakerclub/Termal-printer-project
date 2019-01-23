@@ -33,20 +33,25 @@ amqp.connect('amqp://'+dbConfig.username+':'+dbConfig.password+'@' + dbConfig.ur
       download.image(options)
       .then(({ filename, image }) => {
         console.log('File saved to', filename)
+        
+        console.log('Start print')
+        if (shell.exec('lpr -o fit-to-page ' +  msg.content.toString()+ '.png').code !== 0) {
+          console.log(" [x] Received %s", msg.content.toString());
+          setTimeout(function() {
+            console.log(" [x] Done");
+            ch.ack(msg);
+          }, secs * 1000);
+        }
+
       })
       .catch((err) => {
         console.error(err)
-      })
-
-
-      // if (shell.exec('lpr -o fit-to-page ' +  msg.content.toString()+ '.png').code !== 0) {
-      //   console.log(" [x] Received %s", msg.content.toString());
+        console.log(" [x] Received %s", msg.content.toString());
         setTimeout(function() {
           console.log(" [x] Done");
           ch.ack(msg);
         }, secs * 1000);
-      // }
-
+      })
     }, {noAck: false});
   });
 });
