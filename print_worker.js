@@ -35,13 +35,13 @@ amqp.connect('amqp://'+dbConfig.username+':'+dbConfig.password+'@' + dbConfig.ur
         console.log('File saved to', filename)
         
         console.log('Start print')
-        if (shell.exec('lpr -o fit-to-page ' + 'save_image/'+ msg.content.toString()+ '.png').code !== 0) {
-          console.log(" [x] Received %s", msg.content.toString());
-          setTimeout(function() {
-            console.log(" [x] Done");
-            ch.ack(msg);
-          }, secs * 1000);
-        }
+        shell.exec('lpr -o fit-to-page ' + 'save_image/'+ msg.content.toString()+ '.png')
+        console.log(" [x] Received %s", msg.content.toString());
+        setTimeout(function() {
+          console.log(" [x] Done");
+          ch.ack(msg);
+        }, secs * 1000);
+        
 
       })
       .catch((err) => {
