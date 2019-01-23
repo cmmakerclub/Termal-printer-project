@@ -10,6 +10,7 @@ var randomstring = require("randomstring");
 var amqp = require('amqplib/callback_api');
 
 app.use(express.static('public'))
+app.use(express.static('images'))
 app.use(express.static('node_modules/spectrum-colorpicker'))
 
 app.get('/', (req, res) => res.sendFile("index.html"))
