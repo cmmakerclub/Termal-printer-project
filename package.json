@@ -18,6 +18,8 @@
     "nicojs": "^1.1.8",
     "randomstring": "^1.1.5",
     "shelljs": "^0.8.3",
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0",
     "spectrum-colorpicker": "^1.8.0",
     "text-to-image": "^1.2.0"
   }

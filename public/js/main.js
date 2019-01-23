@@ -3,6 +3,13 @@ requirejs.config({
 });
 
 require(['nico', 'jquery', 'spectrum'], function (foo) {
+
+  var socket = io.connect('http://localhost:3001');
+  socket.on('comment', function (data) {
+    console.log("data");
+    console.log(data);
+    nico.send(data.comment, data.color);
+  });
     
   var w = window.outerWidth;
   var h = window.innerHeight;
@@ -32,18 +39,18 @@ require(['nico', 'jquery', 'spectrum'], function (foo) {
     var text = comment.val();
     if (text != "")
     {
-
-      var jqxhr = $.get( "comment", { comment: text, color: $("#custom").spectrum("get").toHexString()}, function(aData) {
+      var color = $("#custom").spectrum("get").toHexString();
+      var jqxhr = $.get( "comment", { comment: text, color: color}, function(aData) {
 
       })
       .done(function(data) {
-
+        socket.emit('new comment', { comment: text, color: color});
       })
       .fail(function() {
         
       })
       .always(function() {
-        nico.send(text, $("#custom").spectrum("get").toHexString());
+        nico.send(text, color);
         comment.val("");
       });
 

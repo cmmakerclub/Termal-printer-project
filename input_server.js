@@ -11,6 +11,7 @@ var amqp = require('amqplib/callback_api');
 
 app.use(express.static('public'))
 app.use(express.static('images'))
+app.use(express.static('node_modules/socket.io-client/dist'))
 app.use(express.static('node_modules/spectrum-colorpicker'))
 
 app.get('/', (req, res) => res.sendFile("index.html"))
@@ -47,7 +48,15 @@ app.get('/comment', function (req, res) {
   res.send('OK');
 })
 
-app.listen(port, () => console.log(`app listening on port ${port}!`))
+var server = app.listen(port, () => console.log(`app listening on port ${port}!`))
+var io = require('socket.io')(server);
+
+io.on('connection', function (socket) {
+  socket.on('new comment', function (data) {
+    socket.broadcast.emit('comment', data);
+    console.log(data);
+  });
+});
 
 function SaveToQueue(fileName)
 {
