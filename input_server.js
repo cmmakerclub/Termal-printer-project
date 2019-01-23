@@ -7,6 +7,7 @@ var fs = require('fs');
 var textToImage = require('text-to-image');
 var format = "YYYY-MM-DD_HH_MM_SS_SSS";
 var randomstring = require("randomstring");
+var amqp = require('amqplib/callback_api');
 
 app.use(express.static('public'))
 app.use(express.static('node_modules/spectrum-colorpicker'))
@@ -37,6 +38,8 @@ app.get('/comment', function (req, res) {
       imageName += moment(new Date()).format(format);
 
       fs.writeFileSync(__dirname + '/images/' + imageName + '.png', buf);
+
+      SaveToQueue(imageName)
     });
   }
 
@@ -44,3 +47,17 @@ app.get('/comment', function (req, res) {
 })
 
 app.listen(port, () => console.log(`app listening on port ${port}!`))
+
+function SaveToQueue(fileName)
+{
+  amqp.connect('amqp://localhost', function(err, conn) {
+    conn.createChannel(function(err, ch) {
+      var q = 'task_queue';
+      var msg = fileName;
+
+      ch.assertQueue(q, {durable: true});
+      ch.sendToQueue(q, new Buffer(msg), {persistent: true});
+      console.log(" [x] Sent '%s'", msg);
+    });
+  });
+}

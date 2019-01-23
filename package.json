@@ -9,11 +9,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "amqplib": "^0.5.3",
     "canvas": "^2.3.1",
     "express": "^4.16.4",
     "moment": "^2.24.0",
     "nicojs": "^1.1.8",
     "randomstring": "^1.1.5",
+    "shelljs": "^0.8.3",
     "spectrum-colorpicker": "^1.8.0",
     "text-to-image": "^1.2.0"
   }
