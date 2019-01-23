@@ -35,7 +35,7 @@ amqp.connect('amqp://'+dbConfig.username+':'+dbConfig.password+'@' + dbConfig.ur
         console.log('File saved to', filename)
         
         console.log('Start print')
-        shell.exec('lpr -o fit-to-page ' + 'save_image/'+ msg.content.toString()+ '.png')
+        shell.exec('lpr -o orientation-requested=6 ' + 'save_image/'+ msg.content.toString()+ '.png')
         console.log(" [x] Received %s", msg.content.toString());
         setTimeout(function() {
           console.log(" [x] Done");

@@ -22,14 +22,14 @@ app.get('/comment', function (req, res) {
   if (comment != "")
   {
     textToImage.generate(comment, {
-    debug: false,
-    maxWidth: 200,
-    fontSize: 16,
-    fontFamily: 'Arial',
-    lineHeight: 30,
-    margin: 5,
-    bgColor: "#FFFFFF",
-    textColor: "black"
+      debug: false,
+      maxWidth: 200,
+      fontSize: 16,
+      fontFamily: 'Arial',
+      lineHeight: 30,
+      margin: 5,
+      bgColor: "#FFFFFF",
+      textColor: "black"
     }).then(function (dataUri) {
 
       var data = dataUri.replace(/^data:image\/\w+;base64,/, "");
