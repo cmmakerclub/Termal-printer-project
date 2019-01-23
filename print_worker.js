@@ -1,7 +1,17 @@
 var amqp = require('amqplib/callback_api');
 var shell = require('shelljs');
 
-amqp.connect('amqp://localhost', function(err, conn) {
+const config = require('config');
+const dbConfig = config.get('rabbitMQ');
+
+amqp.connect('amqp://'+dbConfig.username+':'+dbConfig.password+'@' + dbConfig.url, function(err, conn) {
+
+  if (err)
+  {
+    console.log(err)
+    return
+  }
+
   conn.createChannel(function(err, ch) {
     var q = 'task_queue';
 
@@ -10,7 +20,7 @@ amqp.connect('amqp://localhost', function(err, conn) {
     console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", q);
     ch.consume(q, function(msg) {
       var secs = msg.content.toString().split('.').length - 1;
-      
+
       if (shell.exec('lpr -o fit-to-page ' +  msg.content.toString()+ '.png').code !== 0) {
         console.log(" [x] Received %s", msg.content.toString());
         setTimeout(function() {

@@ -1,0 +1,7 @@
+{
+  "rabbitMQ":{
+    "url": "localhost",
+    "username": "username",
+    "password": "password"
+  }
+}
