@@ -4,7 +4,7 @@ requirejs.config({
 
 require(['nico', 'jquery', 'spectrum'], function (foo) {
 
-  var socket = io.connect('http://localhost:3001');
+  var socket = io.connect(document.URL);
   socket.on('comment', function (data) {
     console.log("data");
     console.log(data);
