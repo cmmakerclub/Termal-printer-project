@@ -1,5 +1,6 @@
 images
 config
+save_image
 # Logs
 logs
 *.log
