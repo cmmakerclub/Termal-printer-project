@@ -25,7 +25,7 @@ app.get('/comment', function (req, res) {
     debug: false,
     maxWidth: 200,
     fontSize: 16,
-    fontFamily: 'Helvetica',
+    fontFamily: 'Arial',
     lineHeight: 30,
     margin: 5,
     bgColor: "#FFFFFF",
