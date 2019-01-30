@@ -6,8 +6,6 @@ require(['nico', 'jquery', 'spectrum'], function (foo) {
 
   var socket = io.connect(document.URL);
   socket.on('comment', function (data) {
-    console.log("data");
-    console.log(data);
     nico.send(data.comment, data.color);
   });
     

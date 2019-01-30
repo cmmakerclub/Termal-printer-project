@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "amqplib": "^0.5.3",
+    "atob": "^2.1.2",
+    "body-parser": "^1.18.3",
     "canvas": "^2.3.1",
     "config": "^3.0.1",
     "express": "^4.16.4",

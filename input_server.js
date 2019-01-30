@@ -8,7 +8,10 @@ var textToImage = require('text-to-image');
 var format = "YYYY-MM-DD_HH_MM_SS_SSS";
 var randomstring = require("randomstring");
 var amqp = require('amqplib/callback_api');
+var bodyParser = require('body-parser');
 
+app.use(bodyParser.json({limit: '50mb'})); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' })); // support encoded bodies
 app.use(express.static('public'))
 app.use(express.static('images'))
 app.use(express.static('node_modules/socket.io-client/dist'))
@@ -36,8 +39,8 @@ app.get('/comment', function (req, res) {
       var data = dataUri.replace(/^data:image\/\w+;base64,/, "");
       var buf = new Buffer(data, 'base64');
 
-      var imageName = randomstring.generate(4) + "_";
-      imageName += moment(new Date()).format(format);
+      var imageName = moment(new Date()).format(format) + "_";
+      imageName += randomstring.generate(4);
 
       fs.writeFileSync(__dirname + '/images/' + imageName + '.png', buf);
 
@@ -46,6 +49,29 @@ app.get('/comment', function (req, res) {
   }
 
   res.send('OK');
+})
+
+app.post('/print_image_64', function (req, res) {
+
+  var image = req.body.image_64;
+
+  if (image != "")
+  {
+    var data = new Buffer(image, 'base64');
+
+    var imageName = moment(new Date()).format(format) + "_";
+    imageName += randomstring.generate(4);
+
+
+    fs.writeFileSync(__dirname + '/images/' + imageName + '.png', data);
+    SaveToQueue(imageName)
+    res.send('OK');
+  }
+  else 
+  {
+    res.send('Fail');
+  }
+  
 })
 
 var server = app.listen(port, () => console.log(`app listening on port ${port}!`))
