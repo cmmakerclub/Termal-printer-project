@@ -3,14 +3,14 @@ const express = require('express');
 const line = require('@line/bot-sdk');
 const config = require('config');
 const lineConfig = config.get('line');
-const lineConfig = {
+const lineToken = {
     channelAccessToken: process.env.channelAccessToken || lineConfig.channelAccessToken,
     channelSecret: process.env.channelSecret || lineConfig.channelSecret
 };
 const printUrl = process.env.apiImageUrl || config.apiImageUrl;
 
 
-const client = new line.Client(lineConfig);
+const client = new line.Client(lineToken);
 
 var currentImage = [];
 
@@ -21,7 +21,7 @@ app.get('/image', function (req, res) {
   res.send(z)
 })
 
-app.post('/webhook', line.middleware(lineConfig), (req, res) => {
+app.post('/webhook', line.middleware(lineToken), (req, res) => {
   Promise
     .all(req.body.events.map(handleEvent))
     .then((result) => res.json(result));
