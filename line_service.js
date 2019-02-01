@@ -67,7 +67,30 @@ function handleImageEvent(event) {
 
         client.replyMessage(event.replyToken, msg)
 
-        request.post(printUrl, {form:{image_64: string_data}});
+        request.post(printUrl, {form:{image_64: string_data}},
+
+          function(err, httpResponse, body) 
+          { 
+            var readingMessage = {
+              type: 'text',
+              text: 'ปริ้นรูปแล้วน้าา'
+            };
+
+            var errorMessage = {
+              type: 'text',
+              text: 'เหมือนจะปริ้นไม่ไ้ดนะ'
+            };
+
+            if (!err)
+            {
+              return client.replyMessage(event.replyToken, readingMessage);
+            }
+            else 
+            {
+              return client.replyMessage(event.replyToken, errorMessage);
+            }
+
+          });
         
       });
 
