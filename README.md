@@ -1,5 +1,5 @@
 ### Termal printer
-This project is use pi to print image using termal printer (or any use setup printer)
+This project is use pi to print image using termal printer (or use any setup printer)
 
 ----
 ### printer_worker.js
