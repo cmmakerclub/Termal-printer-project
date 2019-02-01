@@ -1,8 +1,13 @@
 {
-  "rabbitMQ":{
+  "rabbitMQ": {
     "url": "localhost",
     "username": "username",
     "password": "password",
     "port": "3000"
+  },
+  "line": {
+    "channelAccessToken": "xxx",
+    "channelSecret": "xxx",
+    "apiImageUrl": "url"
   }
 }
