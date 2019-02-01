@@ -63,14 +63,15 @@ function handleImageEvent(event) {
         };
         currentImage = body;
         
+        var messageSend = [];
+        messageSend.push(msg);
         var string_data = body.toString('base64');
-
-        client.replyMessage(event.replyToken, msg)
 
         request.post(printUrl, {form:{image_64: string_data}},
 
           function(err, httpResponse, body) 
           { 
+
             var readingMessage = {
               type: 'text',
               text: 'ปริ้นรูปแล้วน้าา'
@@ -83,11 +84,13 @@ function handleImageEvent(event) {
 
             if (!err)
             {
-              return client.replyMessage(event.replyToken, readingMessage);
+              messageSend.push(readingMessage);
+              return client.replyMessage(event.replyToken, messageSend);
             }
             else 
             {
-              return client.replyMessage(event.replyToken, errorMessage);
+              messageSend.push(errorMessage);
+              return client.replyMessage(event.replyToken, messageSend);
             }
 
           });
