@@ -30,8 +30,6 @@ $(document).ready(function() {
     {
       var row = "<div class=\"grid-item\"><img src=\"" + window.location.protocol + "/" + data[i] + "\"</img></div>";
       $('.grid').append(row);
-      macyInstance.recalculate(true, true);
-      Recalculate();
     }
 
   })
