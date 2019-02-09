@@ -10,8 +10,8 @@ $(document).ready(function() {
   function Recalculate()
   {
     setTimeout(function(){
-      macyInstance.reInit();
-    }, 300)
+      macyInstance.recalculate(true, true);
+    }, 330)
   }
 
 
@@ -29,6 +29,10 @@ $(document).ready(function() {
     {
       var row = "<div class=\"grid-item\"><img src=\"" + window.location.protocol + "/" + data[i] + "\"</img></div>";
       $('.grid').append(row);
+      macyInstance.recalculate(true, true);
+      setTimeout(function(){
+        macyInstance.recalculate(true, true);
+    }, 330)
     }
 
   })
