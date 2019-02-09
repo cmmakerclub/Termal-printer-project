@@ -102,7 +102,7 @@ app.get('/images_all', function (req, res) {
 
     if (files.length > max)
     {
-      // files = files.slice(0, max)
+      files = files.slice(0, max)
     }
 
     res.send(files);

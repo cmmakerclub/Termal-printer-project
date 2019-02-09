@@ -11,10 +11,6 @@ $(document).ready(function() {
   {
     setTimeout(function(){
       macyInstance.reInit();
-    }, 100)
-
-    setTimeout(function(){
-      macyInstance.reInit();
     }, 300)
   }
 
