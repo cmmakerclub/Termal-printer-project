@@ -11,9 +11,12 @@ $(document).ready(function() {
   function Recalculate()
   {
     setTimeout(function(){
-      $(window).trigger('resize');
       macyInstance.recalculate(true, true);
     }, 330)
+
+    setTimeout(function(){
+      $(window).trigger('resize');
+    }, 800)
   }
 
 
