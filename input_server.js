@@ -59,8 +59,6 @@ app.get('/comment', function (req, res) {
 app.get('/images_latest', function (req, res) {
 
   // TODO add filter by page 
-  var max = 20;
-  var page = req.query.page;
 
   if (typeof page == "undefined")
   {
@@ -82,7 +80,7 @@ app.get('/images_latest', function (req, res) {
 
 app.get('/images_all', function (req, res) {
 
-  var max = 30;
+  var max = 40;
   var page = req.query.page;
 
   if (typeof page == "undefined")
