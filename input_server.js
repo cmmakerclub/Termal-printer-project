@@ -82,7 +82,7 @@ app.get('/images_latest', function (req, res) {
 
 app.get('/images_all', function (req, res) {
 
-  var max = 12;
+  var max = 30;
   var page = req.query.page;
 
   if (typeof page == "undefined")
