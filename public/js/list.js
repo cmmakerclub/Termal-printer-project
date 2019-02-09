@@ -4,21 +4,24 @@ $(document).ready(function() {
   var macyInstance = Macy({
     container: '.grid',
     trueOrder: true,
-    waitForImages: true,
-    mobileFirst: true,
-    useOwnImageLoader: true,
-    breakAt: {}
+    waitForImages: false,
+    columns: 4,
+    mobileFirst: true
   });
 
   function Recalculate()
   {
     setTimeout(function(){
       macyInstance.recalculate(true, true);
-    }, 330)
+    }, 300)
 
     setTimeout(function(){
       $(window).trigger('resize');
     }, 800)
+
+    setTimeout(function(){
+      macyInstance.recalculate(true, true);
+    }, 2000)
   }
 
 
