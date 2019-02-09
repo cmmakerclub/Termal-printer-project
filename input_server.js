@@ -22,7 +22,7 @@ app.use(express.static('node_modules/socket.io-client/dist'))
 app.use(express.static('node_modules/spectrum-colorpicker'))
 
 app.get('/', (req, res) => res.sendFile("index.html"));
-app.get('/images', (req, res) => res.sendFile(__dirname + "/" + publicDir + "/" + "list.html"));
+app.get('/picture', (req, res) => res.sendFile(__dirname + "/" + publicDir + "/" + "list.html"));
 
 app.get('/comment', function (req, res) {
 
@@ -75,8 +75,8 @@ app.get('/images_latest', function (req, res) {
 
 
     files = files.filter(e => {return e.indexOf("image") != -1});
-
-    res.send(files.reverse()[0]);
+    files = files.reverse();
+    res.send(files[0]);
   });
 })
 
@@ -106,7 +106,7 @@ app.get('/images_all', function (req, res) {
     {
       files = files.slice(0, max)
     }
-    
+
     res.send(files);
   });
 })
@@ -140,7 +140,6 @@ var io = require('socket.io')(server);
 io.on('connection', function (socket) {
   socket.on('new comment', function (data) {
     socket.broadcast.emit('comment', data);
-    console.log(data);
   });
 });
 

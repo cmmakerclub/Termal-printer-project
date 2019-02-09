@@ -1,11 +1,12 @@
+body {
+  background: url("/img/bg.png");
+}
 /* clear fix */
 .grid:after {
   content: '';
   display: block;
   clear: both;
 }
-
-/* ---- .grid-item ---- */
 
 .grid-sizer,
 .grid-item {
