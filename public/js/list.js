@@ -4,8 +4,10 @@ $(document).ready(function() {
   var macyInstance = Macy({
     container: '.grid',
     trueOrder: true,
-    waitForImages: false,
+    waitForImages: true,
     mobileFirst: true,
+    useOwnImageLoader: true,
+    breakAt: {}
   });
 
   function Recalculate()
