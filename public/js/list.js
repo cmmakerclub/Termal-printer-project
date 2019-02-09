@@ -4,7 +4,8 @@ $(document).ready(function() {
   var macyInstance = Macy({
     container: '.grid',
     trueOrder: true,
-    waitForImages: false
+    waitForImages: false,
+    mobileFirst: true,
   });
 
   function Recalculate()
