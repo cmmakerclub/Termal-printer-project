@@ -8,7 +8,11 @@ require(['nico', 'jquery', 'spectrum'], function (foo) {
   socket.on('comment', function (data) {
     nico.send(data.comment, data.color);
   });
-    
+
+  socket.on('new image', function (data) {
+    $('body').css('background-image', 'url(' + window.location.protocol + "/" + data + ')');
+  });
+
   var w = window.outerWidth;
   var h = window.innerHeight;
 
@@ -19,8 +23,6 @@ require(['nico', 'jquery', 'spectrum'], function (foo) {
       font_size : 60,     // opt
       color     : '#fff'  // opt
   })
-
-  console.log(nico)
 
   nico.listen();
 
@@ -54,6 +56,17 @@ require(['nico', 'jquery', 'spectrum'], function (foo) {
 
     }
   })
+
+  var bgImage = $.get("images_latest", {}, function(aData) {
+  })
+  .done(function(data) {
+    $('body').css('background-image', 'url(' + window.location.protocol + "/" + data + ')');
+  })
+  .fail(function() {
+    
+  })
+  .always(function() {
+  });
 
   $("#custom").spectrum({
     color: "#fff"
