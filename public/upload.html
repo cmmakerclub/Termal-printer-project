@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/list.css">
+
+  <script type="text/javascript" src="js/jquery.js"></script>
+  <script type="text/javascript" src="socket.io.js"></script>
+  <script type="text/javascript" src="js/imagesloaded.pkgd.min.js"></script>
+  <script type="text/javascript" src="js/macy.js"></script>
+  <script type="text/javascript" src="js/list.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <form action="/upload_picture" method="post" enctype="multipart/form-data">
+        <input type="file" name="avatar" />
+        <input type="submit">
+      </form>
+    </div>
+  </body>
+</html>

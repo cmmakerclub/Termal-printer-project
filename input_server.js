@@ -1,7 +1,8 @@
-const express = require('express')
-const app = express()
-const port = 3001
+const express = require('express');
+const app = express();
+const port = 3001;
 
+var multer  = require('multer');
 var moment = require('moment');
 var fs = require('fs');
 var textToImage = require('text-to-image');
@@ -14,6 +15,16 @@ var fileAsText = "_text_";
 var imageDir = __dirname + "/images/";
 var publicDir = "public";
 
+var storage = multer.diskStorage({
+  destination: imageDir,
+  // filename: function (req, file, cb) {
+  //   cb(null, moment(new Date()).format(format) + file.fieldname)
+  // }
+  filename: moment(new Date()).format(format) + fileAsImage + randomstring.generate(4)
+})
+
+var upload = multer(storage);
+
 app.use(bodyParser.json({limit: '50mb'})); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' })); // support encoded bodies
 app.use(express.static(publicDir))
@@ -22,6 +33,7 @@ app.use(express.static('node_modules/socket.io-client/dist'))
 app.use(express.static('node_modules/spectrum-colorpicker'))
 
 app.get('/', (req, res) => res.sendFile("index.html"));
+app.get('/upload_picture', (req, res) => res.sendFile(__dirname + "/" + publicDir + "/" + "upload.html"));
 app.get('/picture', (req, res) => res.sendFile(__dirname + "/" + publicDir + "/" + "list.html"));
 
 app.get('/comment', function (req, res) {
@@ -56,10 +68,27 @@ app.get('/comment', function (req, res) {
   res.send('OK');
 })
 
+app.post('/upload_picture', upload.single('avatar'), function(req, res) {
+  if (typeof req.file == "undefined")
+  {
+    res.send('Error');
+  }
+  else 
+  {
+    console.log('upload ok')
+    var imageName = moment(new Date()).format(format) + fileAsImage;
+    imageName += randomstring.generate(4) + ".png";
+
+    fs.writeFileSync(imageDir + imageName, req.file.buffer);
+    SaveToQueue(imageName)
+    io.emit('new image', imageName);
+    res.send('OK');
+  }
+})
+
 app.get('/images_latest', function (req, res) {
 
   // TODO add filter by page 
-
   if (typeof page == "undefined")
   {
     page = 1;
