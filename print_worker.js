@@ -22,8 +22,21 @@ amqp.connect('amqp://'+dbConfig.username+':'+dbConfig.password+'@' + dbConfig.ur
 
     ch.consume(q, function(msg) {
 
+      var imageName = msg.content.toString();
+
+      var type = "";
+
+      if (imageName.indexOf("image") != -1)
+      {
+        type = "image";
+      }
+      else if (imageName.indexOf("text") != -1)
+      {
+        type = "text";
+      }
+
       var secs = msg.content.toString().split('.').length - 1;
-      var urlImage = 'http://' + dbConfig.url + ":" + dbConfig.port + '/'+ msg.content.toString();
+      var urlImage = 'http://' + dbConfig.url + ":" + dbConfig.port + '/'+ imageName;
       var options = {
         url: urlImage,
         dest: __dirname + '/save_image'
@@ -35,8 +48,8 @@ amqp.connect('amqp://'+dbConfig.username+':'+dbConfig.password+'@' + dbConfig.ur
         console.log('File saved to', filename)
         
         console.log('Start print')
-        shell.exec('lpr -o orientation-requested=6 ' + 'save_image/'+ msg.content.toString())
-        console.log(" [x] Received %s", msg.content.toString());
+        shell.exec('lpr -o orientation-requested=3 ' + 'save_image/'+ imageName)
+        console.log(" [x] Received %s", imageName);
         setTimeout(function() {
           console.log(" [x] Done");
           ch.ack(msg);
@@ -46,7 +59,7 @@ amqp.connect('amqp://'+dbConfig.username+':'+dbConfig.password+'@' + dbConfig.ur
       })
       .catch((err) => {
         console.error(err)
-        console.log(" [x] Received %s", msg.content.toString());
+        console.log(" [x] Received %s", imageName);
         setTimeout(function() {
           console.log(" [x] Done");
           ch.ack(msg);
