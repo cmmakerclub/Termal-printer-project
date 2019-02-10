@@ -13,8 +13,10 @@
   </head>
   <body>
     <div id="app">
+      <blockquote>API "/upload_picture"</blockquote>
+      <blockquote>Post picture name "avatar" with "multipart/form-data".</blockquote>
       <form action="/upload_picture" method="post" enctype="multipart/form-data">
-        <input type="file" name="avatar" />
+        <input type="file" name="avatar" accept="image/*"/>
         <input type="submit">
       </form>
     </div>
