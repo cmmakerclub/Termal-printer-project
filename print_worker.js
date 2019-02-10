@@ -23,7 +23,7 @@ amqp.connect('amqp://'+dbConfig.username+':'+dbConfig.password+'@' + dbConfig.ur
     ch.consume(q, function(msg) {
 
       var secs = msg.content.toString().split('.').length - 1;
-      var urlImage = 'http://' + dbConfig.url + ":" + dbConfig.port + '/'+ msg.content.toString() +'.png';
+      var urlImage = 'http://' + dbConfig.url + ":" + dbConfig.port + '/'+ msg.content.toString();
       var options = {
         url: urlImage,
         dest: __dirname + '/save_image'
@@ -35,7 +35,7 @@ amqp.connect('amqp://'+dbConfig.username+':'+dbConfig.password+'@' + dbConfig.ur
         console.log('File saved to', filename)
         
         console.log('Start print')
-        shell.exec('lpr -o orientation-requested=6 ' + 'save_image/'+ msg.content.toString()+ '.png')
+        shell.exec('lpr -o orientation-requested=6 ' + 'save_image/'+ msg.content.toString())
         console.log(" [x] Received %s", msg.content.toString());
         setTimeout(function() {
           console.log(" [x] Done");
