@@ -70,8 +70,9 @@ app.get('/comment', function (req, res) {
 
 app.post('/upload_picture', upload.single('avatar'), function(req, res) {
 
-  if (typeof req.file == "undefined" || req.file.mimetype.indexOf("image") == -1)
+  if (!req.file)
   {
+    console.log("Error");
     res.send('Error');
   }
   else 
