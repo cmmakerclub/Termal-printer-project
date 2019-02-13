@@ -28,7 +28,7 @@ input_server.js api list.
 
 **/print\_image\_64** will get image by sending image with base64 string name **image_64** and save to **images** folder.
 
-**upload\_picture** upload picture with field name **avatar**.
+**/upload\_picture** upload picture with field name **avatar**.
 
 	curl -F avatar=@picture_name.png localhost:3001/upload_picture		
 
