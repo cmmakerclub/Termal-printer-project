@@ -17,15 +17,20 @@ Run this app on your cloud or local server.
 
 Install rabbitMQ on your os.
 
-input_server.js have main 3 path.
+input_server.js api list.
 
 	get /
 	get /comment
 	post /print_image_64
+	post /upload_picture
 
 **/** will render html with input this input send data to **/comment**. This will generate image with user input text and save to **images** folder.
 
-**/print_image_64** will get image by sending image with base64 string name **image_64** and save to **images** folder.
+**/print\_image\_64** will get image by sending image with base64 string name **image_64** and save to **images** folder.
+
+**upload\_picture** upload picture with field name **avatar**.
+
+	curl -F avatar=@picture_name.png localhost:3001/upload_picture		
 
 After install to config, copy file in **Config/default.json** to **Config/local.json** and edit to your config.
 
