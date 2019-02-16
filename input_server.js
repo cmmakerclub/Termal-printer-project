@@ -190,7 +190,7 @@ app.get('/firer', function (req, res) {
   }
 
   res.send('OK');
-}
+})
 
 var server = app.listen(port, () => console.log(`app listening on port ${port}!`))
 var io = require('socket.io')(server);
