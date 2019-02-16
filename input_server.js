@@ -265,7 +265,7 @@ function SendDataToDisplay(imagePath)
       client.publish(topicLCD, hexOutput)
       console.log('send data to topic topicLCD')
       lcdNumber++;
-      if (lcdNumber >= 3)
+      if (lcdNumber > 3)
       {
         lcdNumber = 1;
       }
