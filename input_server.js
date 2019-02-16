@@ -184,7 +184,7 @@ app.get('/firer', function (req, res) {
 
   var cloudTopic = "TECH_FEST/CLOUD_00";
 
-  for (var i = 0; i < 6; i++)
+  for (var i = 1; i < 4; i++)
   {
     client.publish(cloudTopic + commandFirer, "Firer");
   }
