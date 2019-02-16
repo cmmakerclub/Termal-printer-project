@@ -46,9 +46,10 @@ amqp.connect('amqp://'+dbConfig.username+':'+dbConfig.password+'@' + dbConfig.ur
       download.image(options)
       .then(({ filename, image }) => {
         console.log('File saved to', filename)
-        
         console.log('Start print')
-        shell.exec('lpr -o orientation-requested=6 -o mirror ' + 'save_image/'+ imageName)
+
+        shell.exec('convert save_image/' + imageName + ' -rotate 180 ' + 'save_image/' + imageName)
+        shell.exec('lpr -o orientation-requested=6 ' + 'save_image/'+ imageName)
         console.log(" [x] Received %s", imageName);
         setTimeout(function() {
           console.log(" [x] Done");
