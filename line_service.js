@@ -109,6 +109,11 @@ function handleMessageEvent(event) {
     text: 'ส่งรูปมาเลยจ้า'
   };
 
+  if (event.message.text == "Firer")
+  {
+    
+  }
+
   return client.replyMessage(event.replyToken, msg);
 }
 

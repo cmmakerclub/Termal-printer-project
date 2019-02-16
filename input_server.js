@@ -172,6 +172,26 @@ app.post('/print_image_64', function (req, res) {
   
 })
 
+app.get('/firer', function (req, res) {
+
+  var ledTopic = "TECH_FEST/LED_STRIP_00";
+  var commandFirer = "/$/firer";
+
+  for (var i = 0; i < 6; i++)
+  {
+    client.publish(ledTopic + commandFirer, "Firer");
+  }
+
+  var cloudTopic = "TECH_FEST/CLOUD_00";
+
+  for (var i = 0; i < 6; i++)
+  {
+    client.publish(cloudTopic + commandFirer, "Firer");
+  }
+
+  res.send('OK');
+}
+
 var server = app.listen(port, () => console.log(`app listening on port ${port}!`))
 var io = require('socket.io')(server);
 
