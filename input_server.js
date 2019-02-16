@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = 3001;
 
+var Jimp = require('jimp');
 var multer  = require('multer');
 var moment = require('moment');
 var fs = require('fs');
@@ -14,6 +15,10 @@ var fileAsImage = "_image_";
 var fileAsText = "_text_";
 var imageDir = __dirname + "/images/";
 var publicDir = "public";
+
+var mqtt = require('mqtt')
+var client  = mqtt.connect('mqtt://mqtt.cmmc.io')
+var lcdNumber = 1;
 
 var storage = multer.diskStorage({
   destination: imageDir,
@@ -81,8 +86,10 @@ app.post('/upload_picture', upload.single('avatar'), function(req, res) {
     var imageName = moment(new Date()).format(format) + fileAsImage;
     imageName += randomstring.generate(4) + ".png";
 
-    fs.writeFileSync(imageDir + imageName, req.file.buffer);
-    SaveToQueue(imageName)
+    var imagePath = imageDir + imageName;
+    fs.writeFileSync(imagePath, req.file.buffer);
+    SaveToQueue(imageName);
+    SendDataToDisplay(imagePath);
     io.emit('new image', imageName);
     res.send('OK');
   }
@@ -122,9 +129,9 @@ app.get('/images_all', function (req, res) {
   fs.readdir(imageDir, (err, files) => {
 
     files.sort(function(a, b) {
-               return fs.statSync(imageDir + a).mtime.getTime() - 
-                      fs.statSync(imageDir + b).mtime.getTime();
-           });
+       return fs.statSync(imageDir + a).mtime.getTime() - 
+              fs.statSync(imageDir + b).mtime.getTime();
+    });
 
 
     files = files.filter(e => {return e.indexOf("image") != -1});
@@ -151,8 +158,10 @@ app.post('/print_image_64', function (req, res) {
     var imageName = moment(new Date()).format(format) + fileAsImage;
     imageName += randomstring.generate(4) + ".png";
 
-    fs.writeFileSync(imageDir + imageName, data);
+    var imagePath = imageDir + imageName;
+    fs.writeFileSync(imagePath, data);
     SaveToQueue(imageName)
+    SendDataToDisplay(imagePath)
     io.emit('new image', imageName);
     res.send('OK');
   }
@@ -185,4 +194,83 @@ function SaveToQueue(fileName)
       console.log(" [x] Sent '%s'", msg);
     });
   });
+}
+
+function SendDataToDisplay(imagePath)
+{
+  var listData = "";
+  Jimp.read(imagePath)
+    .then(gray_image => {
+      return gray_image
+        .resize(128, 64, Jimp.RESIZE_HERMITE) // resize
+        .quality(40) // set JPEG quality
+        .greyscale() // set greyscale
+        
+    })
+    .then(image => {
+
+      listData = "";
+
+      return image.scan(0, 0, image.bitmap.width, image.bitmap.height, function(x, y, idx) {
+        // x, y is the position of this pixel on the image
+        // idx is the position start position of this rgba tuple in the bitmap Buffer
+        // this is the image
+   
+
+        var red = this.bitmap.data[idx + 0];
+        var green = this.bitmap.data[idx + 1];
+        var blue = this.bitmap.data[idx + 2];
+        var alpha = this.bitmap.data[idx + 3];
+       
+        if (red + green + blue > (255/2 + 255/2 + 255.0/2))
+        {
+          // this.bitmap.data[idx + 0] = 255;
+          // this.bitmap.data[idx + 1] = 255;
+          // this.bitmap.data[idx + 2] = 255;
+
+          listData += "0";
+        }
+        else
+        {
+          // this.bitmap.data[idx + 0] = 0;
+          // this.bitmap.data[idx + 1] = 0;
+          // this.bitmap.data[idx + 2] = 0;
+          listData += "1";
+        }
+
+        // rgba values run from 0 - 255
+        // e.g. this.bitmap.data[idx] = 0; // removes red from this pixel
+      })
+    })
+    .then(image => {
+
+      var hex = "";
+      var hexOutput = "";
+      for (var i = 0; i < (128 * 64); i += 4)
+      {
+        hex = "";
+        for (var j = 0; j < 4; j++)
+        {
+          var index = i + j;
+          hex += listData[i + j];
+        }
+
+        var hexString = parseInt(hex, 2).toString(16).toUpperCase();
+
+        hexOutput += hexString;
+      }
+
+      // console.log(hexOutput)
+      var topicLCD = 'TECH_FEST/LCD_PICTURE_00' + lcdNumber + "/$/command";
+      client.publish(topicLCD, hexOutput)
+      console.log('send data to topic topicLCD')
+      lcdNumber++;
+      if (lcdNumber >= 3)
+      {
+        lcdNumber = 1;
+      }
+    })
+    .catch(err => {
+      console.error(err);
+    });
 }
